@@ -178,10 +178,10 @@
         <p>
           While in the [=pointer lock state=] if the [=pointer-lock options=]'
           {{PointerLockOptions/unadjustedMovement}} member is `true`, the event
-          coordinates will not be affected by the underlying platform
-          behaviors such as mouse acceleration. In other words, the user agent
-          uses the APIs provided by the underlying platform to guarantee
-          getting the raw events. If the {{PointerLockOptions}}'
+          coordinates will not be affected by the underlying platform behaviors
+          such as mouse acceleration. In other words, the user agent uses the
+          APIs provided by the underlying platform to guarantee getting the raw
+          events. If the {{PointerLockOptions}}'
           {{PointerLockOptions/unadjustedMovement}} member is `false`, the user
           agent relies on the default behavior of the underlying platform
           regarding the mouse acceleration.
@@ -236,8 +236,8 @@
           Two events are used to communicate pointer lock state change or an
           error in changing state. They are named <dfn class=
           "event">pointerlockchange</dfn> and <dfn class=
-          "event">pointerlockerror</dfn>. Refer
-          to algorithm of [[[#requestPointerLock]]] for detail.
+          "event">pointerlockerror</dfn>. Refer to algorithm of
+          [[[#requestPointerLock]]] for detail.
         </p>
         <p class="note">
           Magnification software increases the size of content on the screen.
@@ -303,16 +303,17 @@
         </dt>
         <dd>
           <p>
-            When <dfn>requestPointerLock()</dfn> invoked, perform the following
-            steps:
+            A [=parallel queue=] named as <dfn>lock requests queue</dfn> is
+            used for queuing all requests. When <dfn>requestPointerLock()</dfn>
+            invoked, perform the following steps:
           </p>
           <ol class="algorithm">
             <li>Let |promise:Promise| be [=a new promise=].
             </li>
-            <li>When a {{Window/window}} is in [=Window/focus=], if the [=this=]'s
-            [=shadow-including root=] is the [=navigable/active document=] of a
-            [=Document/browsing context=] (or has an [=tree/ancestor=]
-            [=browsing context=]) that is not in focus:
+            <li>When a {{Window/window}} is in [=Window/focus=], if the
+            [=this=]'s [=shadow-including root=] is the [=navigable/active
+            document=] of a [=Document/browsing context=] (or has an
+            [=tree/ancestor=] [=browsing context=]) that is not in focus:
               <ol>
                 <li>[=Queue an element task=] on the [=user interaction task
                 source=], given [=this=], to perform the following steps:
@@ -328,75 +329,11 @@
                 <li>Return <var>promise</var>.
                 </li>
               </ol>
+              <aside class="issue" data-number="93"></aside>
             </li>
-            <li>If the user agent's [=pointer-lock target=] is an element whose
-            [=shadow-including root=] is not equal to [=this=]'s
-            [=shadow-including root=], then:
-              <ol>
-                <li>[=Queue an element task=] on the [=user interaction task
-                source=], given this, to perform the following steps:
-                  <ol>
-                    <li>[=Fire an event=] named {{pointerlockerror}} at
-                    [=this=]'s [=Node/node document=].
-                    </li>
-                    <li>[=Reject=] <var>promise</var> with a
-                    "{{InvalidStateError}}" {{DOMException}}.
-                    </li>
-                  </ol>
-                </li>
-                <li>Return <var>promise</var>.
-                </li>
-              </ol>
-            </li>
-            <li>If the user agent's [=pointer-lock target=]'s
-            [=shadow-including root=] is equal to [=this=]'s [=shadow-including
-            root=], then:
-              <ol>
-                <li>If [=options=] are equivalent to the current [=pointer-lock
-                options=]
-                  <ol>
-                    <li>Set [=pointer-lock target=] to [=this=]
-                    </li>
-                    <li>[=Queue an element task=] on the [=user interaction
-                    task source=], given this, to perform the following steps:
-                      <ol>
-                        <li>[=Fire an event=] named {{pointerlockchange}} at
-                        [=this=]'s [=Node/node document=].
-                        </li>
-                        <li>[=Resolve=] the <var>promise</var>.
-                        </li>
-                      </ol>
-                    </li>
-                  </ol>
-                </li>
-                <li>If [=options=] are not equivalent to the current
-                [=pointer-lock options=] then perform the following steps:
-                  <ol>
-                    <li>Update the user agent's [=pointer-lock target=] to this
-                    element.
-                    </li>
-                    <li>Update the user agent's [=pointer-lock options=] to
-                    [=options=]
-                    </li>
-                    <li>[=Queue an element task=] on the [=user interaction
-                    task source=], given this, to perform the following steps:
-                      <ol>
-                        <li>[=Fire an event=] named {{pointerlockchange}} at
-                        [=this=]'s [=Node/node document=].
-                        </li>
-                        <li>The <var>promise</var> must be resolved.
-                        </li>
-                      </ol>
-                    </li>
-                    <li>Return <var>promise</var>.
-                    </li>
-                  </ol>
-                </li>
-              </ol>
-            </li>
-            <li>If the 'relevant global object does not have [=transient activation=]
-            and the {{Document}} has not previously released a successful
-            pointer lock with {{Document/exitPointerLock()}}:
+            <li>If the 'relevant global object does not have [=transient
+            activation=] and the {{Document}} has not previously released a
+            successful pointer lock with {{Document/exitPointerLock()}}:
               <ol>
                 <li>[=Queue an element task=] on the [=user interaction task
                 source=], given this, to perform the following steps:
@@ -413,11 +350,12 @@
                 </li>
               </ol>
               <aside class="note">
-                When a single <a>user activation</a> initiates both pointer lock and
-                fullscreen [[FULLSCREEN]], the {{requestPointerLock()}} call
-                succeeds only when it is made before a fullscreen request because
-                fullscreen is a <a>transient activation-consuming API</a>.
-              </aside>    
+                When a single <a>user activation</a> initiates both pointer
+                lock and fullscreen [[FULLSCREEN]], the
+                {{requestPointerLock()}} call succeeds only when it is made
+                before a fullscreen request because fullscreen is a
+                <a>transient activation-consuming API</a>.
+              </aside>
             </li>
             <li>If [=this=]'s [=Node/node document=]'s [=Document/active
             sandboxing flag set=] has the [=sandboxed pointer lock browsing
@@ -438,7 +376,7 @@
                 </li>
               </ol>
             </li>
-            <li>If [=options=]["{{PointerLockOptions/unadjustedMovement}}"] is
+            <li>If options["{{PointerLockOptions/unadjustedMovement}}"] is
             true and the platform does not support
             {{PointerLockOptions/unadjustedMovement}}:
               <ol>
@@ -456,34 +394,95 @@
                 <li>Return <var>promise</var>.
                 </li>
               </ol>
-              <aside class="note" data-link-for="Document">
-                "{{NotSupportedError}}" {{DOMException}} should be reserved for
-                unsupported options in future iterations of this spec. That is,
-                no other error conditions should use "{{NotSupportedError}}",
-                so that web developers can use it for feature testing.
-              </aside>
+              <aside class="issue" data-number="90"></aside>
             </li>
-            <li>If none of the above errors have occurred
+            <li>Enqueue the following steps to the [=lock requests queue=]:
               <ol>
-                <li>Enter [=pointer lock state=] by performing the following:
+                <li>If the user agent's [=pointer-lock target=] is an element
+                whose [=shadow-including root=] is not equal to [=this=]'s
+                [=shadow-including root=], then:
                   <ol>
-                    <li>Set the user agent's [=pointer-lock target=] to
-                    [=this=].
-                    </li>
-                    <li>Set the user agent's [=cursor position=] to the current
-                    system mouse location.
-                    </li>
-                    <li>Set the [=pointer-lock options=] to [=options=].
+                    <li>[=Queue an element task=] on the [=user interaction
+                    task source=], given this, to perform the following steps:
+                      <ol>
+                        <li>[=Fire an event=] named {{pointerlockerror}} at
+                        [=this=]'s [=Node/node document=].
+                        </li>
+                        <li>[=Reject=] <var>promise</var> with a
+                        "{{InvalidStateError}}" {{DOMException}}.
+                        </li>
+                      </ol>
                     </li>
                   </ol>
                 </li>
-                <li>[=Queue an element task=] on the [=user interaction task
-                source=], given this, to perform the following steps:
+                <li>If the user agent's [=pointer-lock target=]'s
+                [=shadow-including root=] is equal to [=this=]'s
+                [=shadow-including root=] and options are equivalent to the
+                current [=pointer-lock options=], then:
                   <ol>
-                    <li>[=Fire an event=] named {{pointerlockchange}} at
-                    [=this=]'s [=Node/node document=].
+                    <li>Set [=pointer-lock target=] to [=this=]
                     </li>
-                    <li>[=Resolve=] the <var>promise</var>.
+                    <li>[=Queue an element task=] on the [=user interaction
+                    task source=], given this, to perform the following steps:
+                      <ol>
+                        <li>[=Fire an event=] named {{pointerlockchange}} at
+                        [=this=]'s [=Node/node document=].
+                        </li>
+                        <li>[=Resolve=] the <var>promise</var>.
+                        </li>
+                      </ol>
+                    </li>
+                  </ol>
+                </li>
+                <li>If [=pointer-lock target=] is null, or options is not
+                equivalent to the current [=pointer-lock options=] then process
+                the lock request and handle response upon fulfillment:
+                  <ol>
+                    <li>If the lock request failed:
+                      <ol>
+                        <li>[=Queue an element task=] on the [=user interaction
+                        task source=], given this, to perform the following
+                        steps:
+                          <ol>
+                            <li>[=Fire an event=] named {{pointerlockerror}} at
+                            [=this=]'s [=Node/node document=].
+                            </li>
+                            <li>[=Reject=] <var>promise</var> with a
+                            "{{NotSupportedError}}" {{DOMException}}.
+                            </li>
+                          </ol>
+                        </li>
+                      </ol>
+                      <aside class="issue" data-number="91"></aside>
+                    </li>
+                    <li>If the lock request succeed:
+                      <ol>
+                        <li>Enter [=pointer lock state=] by performing the
+                        following:
+                          <ol>
+                            <li>Set the user agent's [=pointer-lock target=] to
+                            [=this=].
+                            </li>
+                            <li>Set the user agent's [=cursor position=] to the
+                            current system mouse location.
+                            </li>
+                            <li>Set the [=pointer-lock options=] to
+                            options.
+                            </li>
+                          </ol>
+                        </li>
+                        <li>[=Queue an element task=] on the [=user interaction
+                        task source=], given this, to perform the following
+                        steps:
+                          <ol>
+                            <li>[=Fire an event=] named {{pointerlockchange}}
+                            at [=this=]'s [=Node/node document=].
+                            </li>
+                            <li>[=Resolve=] the <var>promise</var>.
+                            </li>
+                          </ol>
+                        </li>
+                      </ol>
                     </li>
                   </ol>
                 </li>
@@ -492,6 +491,12 @@
             <li>Return <var>promise</var>.
             </li>
           </ol>
+          <ul>
+            <aside class="note">
+              This algorithm is under active development and may be modified in
+              subsequent updates.
+            </aside>
+          </ul>
         </dd>
       </dl>
     </section>
