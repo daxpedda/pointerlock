@@ -403,7 +403,8 @@
                 [=shadow-including root=], then:
                   <ol>
                     <li>[=Queue an element task=] on the [=user interaction
-                    task source=], given [=this=], to perform the following steps:
+                    task source=], given [=this=], to perform the following
+                    steps:
                       <ol>
                         <li>[=Fire an event=] named {{pointerlockerror}} at
                         [=this=]'s [=Node/node document=].
@@ -423,7 +424,8 @@
                     <li>Set [=pointer-lock target=] to [=this=].
                     </li>
                     <li>[=Queue an element task=] on the [=user interaction
-                    task source=], given [=this=], to perform the following steps:
+                    task source=], given [=this=], to perform the following
+                    steps:
                       <ol>
                         <li>[=Fire an event=] named {{pointerlockchange}} at
                         [=this=]'s [=Node/node document=].
@@ -435,8 +437,8 @@
                   </ol>
                 </li>
                 <li>If [=pointer-lock target=] is null, or options is not
-                equivalent to the current [=pointer-lock options=], process
-                the lock request and handle response upon fulfillment:
+                equivalent to the current [=pointer-lock options=], process the
+                lock request and handle response upon fulfillment:
                   <ol>
                     <li>If the lock request failed:
                       <ol>
@@ -490,12 +492,10 @@
             <li>Return <var>promise</var>.
             </li>
           </ol>
-          <ul>
-            <aside class="note">
-              This algorithm is under active development and may be modified in
-              subsequent updates.
-            </aside>
-          </ul>
+          <aside class="note">
+            This algorithm is under active development and may be modified in
+            subsequent updates.
+          </aside>
         </dd>
       </dl>
     </section>
