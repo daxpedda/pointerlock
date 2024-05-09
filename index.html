@@ -336,7 +336,7 @@
             successful pointer lock with {{Document/exitPointerLock()}}:
               <ol>
                 <li>[=Queue an element task=] on the [=user interaction task
-                source=], given this, to perform the following steps:
+                source=], given [=this=], to perform the following steps:
                   <ol>
                     <li>[=Fire an event=] named {{pointerlockerror}} at
                     [=this=]'s [=Node/node document=].
@@ -362,7 +362,7 @@
             context flag=] set:
               <ol>
                 <li>[=Queue an element task=] on the [=user interaction task
-                source=], given this, to perform the following steps:
+                source=], given [=this=], to perform the following steps:
                   <ol>
                     <li>[=Fire an event=] named {{pointerlockerror}} at
                     [=this=]'s [=Node/node document=].
@@ -381,7 +381,7 @@
             {{PointerLockOptions/unadjustedMovement}}:
               <ol>
                 <li>[=Queue an element task=] on the [=user interaction task
-                source=], given this, to perform the following steps:
+                source=], given [=this=], to perform the following steps:
                   <ol>
                     <li>[=Fire an event=] named {{pointerlockerror}} at
                     [=this=]'s [=Node/node document=].
@@ -403,7 +403,7 @@
                 [=shadow-including root=], then:
                   <ol>
                     <li>[=Queue an element task=] on the [=user interaction
-                    task source=], given this, to perform the following steps:
+                    task source=], given [=this=], to perform the following steps:
                       <ol>
                         <li>[=Fire an event=] named {{pointerlockerror}} at
                         [=this=]'s [=Node/node document=].
@@ -420,10 +420,10 @@
                 [=shadow-including root=] and options are equivalent to the
                 current [=pointer-lock options=], then:
                   <ol>
-                    <li>Set [=pointer-lock target=] to [=this=]
+                    <li>Set [=pointer-lock target=] to [=this=].
                     </li>
                     <li>[=Queue an element task=] on the [=user interaction
-                    task source=], given this, to perform the following steps:
+                    task source=], given [=this=], to perform the following steps:
                       <ol>
                         <li>[=Fire an event=] named {{pointerlockchange}} at
                         [=this=]'s [=Node/node document=].
@@ -435,13 +435,13 @@
                   </ol>
                 </li>
                 <li>If [=pointer-lock target=] is null, or options is not
-                equivalent to the current [=pointer-lock options=] then process
+                equivalent to the current [=pointer-lock options=], process
                 the lock request and handle response upon fulfillment:
                   <ol>
                     <li>If the lock request failed:
                       <ol>
                         <li>[=Queue an element task=] on the [=user interaction
-                        task source=], given this, to perform the following
+                        task source=], given [=this=], to perform the following
                         steps:
                           <ol>
                             <li>[=Fire an event=] named {{pointerlockerror}} at
@@ -471,7 +471,7 @@
                           </ol>
                         </li>
                         <li>[=Queue an element task=] on the [=user interaction
-                        task source=], given this, to perform the following
+                        task source=], given [=this=], to perform the following
                         steps:
                           <ol>
                             <li>[=Fire an event=] named {{pointerlockchange}}
