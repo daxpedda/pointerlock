@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>
+        <title>
       Pointer Lock 2.0
     </title>
     <meta charset="utf-8"><!--
@@ -305,7 +305,7 @@
           <p>
             A [=parallel queue=] named as <dfn>lock requests queue</dfn> is
             used for queuing all requests. When <dfn>requestPointerLock()</dfn>
-            invoked, perform the following steps:
+            is invoked, perform the following steps:
           </p>
           <ol class="algorithm">
             <li>Let |promise:Promise| be [=a new promise=].
@@ -488,6 +488,7 @@
                   </ol>
                 </li>
               </ol>
+              <aside class="issue" data-number="96"></aside>
             </li>
             <li>Return <var>promise</var>.
             </li>
